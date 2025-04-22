@@ -29,7 +29,7 @@ fun MapScreen(
     gestureEnabled: Boolean = true,
     onMapReady: (() -> Unit)? = null,
     onMapLongPressed: ((LatLng) -> Unit)? = null,
-    dynamicMarker: MarkerData? = null
+    dynamicMarkers: List<MarkerData?>? = null
 ) {
     val defaultCameraPosition = remember {
         CameraPosition.fromLatLngZoom(
@@ -81,12 +81,17 @@ fun MapScreen(
                 )
             }
         }
-        dynamicMarker?.let {
-            Marker(
-                state = rememberMarkerState(position = it.position),
-                title = it.title,
-                snippet = it.snippet
-            )
+        dynamicMarkers?.forEach { marker ->
+            marker?.let {
+                Marker(
+                    state = rememberMarkerState(
+                        key = it.position.toString(),
+                        position = it.position
+                    ),
+                    title = it.title,
+                    snippet = it.snippet
+                )
+            }
         }
     }
 }

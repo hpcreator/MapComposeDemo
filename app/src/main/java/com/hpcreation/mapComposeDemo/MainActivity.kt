@@ -19,6 +19,9 @@ import com.google.maps.android.compose.MapType
 import com.hpcreation.mapComposeDemo.ui.screens.MapScreen
 import com.hpcreation.mapComposeDemo.ui.theme.MapComposeDemoTheme
 import com.hpcreation.mapComposeDemo.viewmodel.MapViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -60,9 +63,11 @@ class MainActivity : ComponentActivity() {
                             Toast.makeText(context, "Map is ready", Toast.LENGTH_LONG).show()
                         },
                         onMapLongPressed = { latLng ->
-                            mapViewModel.onMapLongPressed(latLng, context)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                mapViewModel.onMapLongPressed(latLng, context)
+                            }
                         },
-                        dynamicMarker = mapViewModel.selectedMarker
+                        dynamicMarkers = mapViewModel.markerList
                     )
                 }
             }
