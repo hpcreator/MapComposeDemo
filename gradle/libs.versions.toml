@@ -13,6 +13,7 @@ googleMaps = "19.2.0"
 googleLocation = "21.3.0"
 googlePlayService = "4.4.2"
 composeMaps = "2.7.1"
+koinAndroidxCompose = "4.1.0-Beta7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,7 @@ androidx-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-
 
 androidx-google-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "googleMaps" }
 androidx-compose-maps = { group = "com.google.maps.android", name = "maps-compose", version.ref = "composeMaps" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 #androidx-google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleLocation" }
 
 [plugins]
