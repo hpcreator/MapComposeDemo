@@ -3,7 +3,6 @@ package com.hpcreation.mapComposeDemo.ui.extensions
 import android.content.Context
 import android.graphics.Canvas
 import android.location.Geocoder
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -16,7 +15,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 import java.util.Locale
 import android.graphics.Color as androidColor
 
@@ -38,29 +36,6 @@ fun Context.bitmapDescriptorFromVector(
     drawable.draw(canvas)
 
     return BitmapDescriptorFactory.fromBitmap(bitmap)
-}
-
-suspend fun Context.getAddressFromLatLng(latLng: LatLng): String = withContext(Dispatchers.IO) {
-    return@withContext try {
-        val geocoder = Geocoder(this@getAddressFromLatLng, Locale.getDefault())
-        val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-        if (!addresses.isNullOrEmpty()) {
-            val address = addresses[0]
-            listOfNotNull(
-                address.featureName,
-                address.thoroughfare,
-                address.locality,
-                address.adminArea,
-                address.postalCode,
-                address.countryName
-            ).joinToString(", ")
-        } else {
-            "Unknown Location"
-        }
-    } catch (e: IOException) {
-        Log.e("TAG", "getAddressFromLatLng: Fail to fetch address with ${e.message}")
-        "Address not loaded..."
-    }
 }
 
 fun Context.fetchAddress(latLng: LatLng, callback: (String) -> Unit) {
