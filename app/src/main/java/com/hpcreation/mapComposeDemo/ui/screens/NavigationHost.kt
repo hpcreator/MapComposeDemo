@@ -73,5 +73,6 @@ fun NavigationHost(
         composable(Screen.TravelMode.route) {
             TravelModeScreen(paddingValues)
         }
+        composable(Screen.MapStyling.route) { MapStylingScreen(paddingValues) }
     }
 }
