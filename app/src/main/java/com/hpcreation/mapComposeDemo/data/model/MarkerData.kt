@@ -1,4 +1,4 @@
-package com.hpcreation.mapComposeDemo
+package com.hpcreation.mapComposeDemo.data.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
