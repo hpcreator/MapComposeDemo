@@ -47,8 +47,7 @@ class MarkerRepositoryImpl : MarkerRepository {
     override fun getDefaultDirections() = DirectionData(
         origin = LatLng(22.692641162527536, 72.86318841852814),         // Nadiad, Gujarat
         destination = LatLng(
-            23.022244519693295,
-            72.53759318258524
+            23.022244519693295, 72.53759318258524
         )     // Valtech, Ahmedabad, Gujarat
     )
 }

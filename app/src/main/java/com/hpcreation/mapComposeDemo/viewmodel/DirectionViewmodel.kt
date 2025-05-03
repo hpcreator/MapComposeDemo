@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.hpcreation.mapComposeDemo.data.model.TravelModes
 import com.hpcreation.mapComposeDemo.data.repo.MarkerRepository
 import com.hpcreation.mapComposeDemo.utils.ApiKeyProvider
 import kotlinx.coroutines.Dispatchers
@@ -26,11 +27,7 @@ class DirectionViewmodel(
     private val _durationText = MutableStateFlow("")
     val durationText: StateFlow<String> = _durationText.asStateFlow()
 
-    init {
-        fetchDirections()
-    }
-
-    private fun fetchDirections() {
+    fun fetchDirections(travelMode: String = TravelModes.DRIVING.mode) {
         val direction = repository.getDefaultDirections()
         val origin = "${direction.origin.latitude},${direction.origin.longitude}"
         val destination = "${direction.destination.latitude},${direction.destination.longitude}"
@@ -38,7 +35,7 @@ class DirectionViewmodel(
         viewModelScope.launch {
             try {
                 val url =
-                    "https://maps.googleapis.com/maps/api/directions/json?" + "origin=$origin&destination=$destination&key=${apiKeyProvider.getGoogleMapsApiKey()}"
+                    "https://maps.googleapis.com/maps/api/directions/json?" + "origin=$origin&destination=$destination&key=${apiKeyProvider.getGoogleMapsApiKey()}&mode=$travelMode"
 
                 val response = withContext(Dispatchers.IO) {
                     URL(url).readText()
