@@ -51,11 +51,7 @@ class MainActivity : ComponentActivity() {
             "Different Travel Mode" to Screen.TravelMode.route,
             "Map Styling" to Screen.MapStyling.route,
             "Advanced Data Handling" to Screen.PlacesGeocoding.route,
-            "Clustering Markers" to Screen.Clustering.route,
-            "Geofencing" to Screen.Geofencing.route,
             "Offline Maps and Caching" to Screen.OfflineMaps.route,
-            "Performance Optimization" to Screen.Performance.route,
-            "Security and Accessibility" to Screen.SecurityAccessibility.route
         )
     }
 }

@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.google.fonts)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.android.maps.utils)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
