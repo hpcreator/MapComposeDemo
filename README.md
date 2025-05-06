@@ -63,7 +63,7 @@ This repository showcases a demo Android application built using Kotlin and the 
 2. Run the app using **Android Studio**.
 
 ## Screenshots
-Include screenshots of the app to showcase the features.
+- Yet to be added...
 
 ## Technologies Used
 - **Language**: Kotlin
