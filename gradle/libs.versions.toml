@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2"
 kotlin = "2.1.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -7,12 +7,14 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.04.00"
-googleFonts = "1.7.8"
+composeBom = "2025.04.01"
+googleFonts = "1.8.0"
 googleMaps = "19.2.0"
-googleLocation = "21.3.0"
-googlePlayService = "4.4.2"
 composeMaps = "2.7.1"
+koinAndroidxCompose = "4.1.0-Beta7"
+navigationCompose = "2.9.0-rc01"
+androidMapsUtils = "3.13.0"
+playServicesLocation = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,11 +35,12 @@ androidx-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-
 
 androidx-google-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "googleMaps" }
 androidx-compose-maps = { group = "com.google.maps.android", name = "maps-compose", version.ref = "composeMaps" }
-#androidx-google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleLocation" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinAndroidxCompose" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+android-maps-utils = { group = "com.google.maps.android", name = "android-maps-utils", version.ref = "androidMapsUtils" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-#google-play-service = { id = "com.google.gms.google-services", version.ref = "googlePlayService" }
-

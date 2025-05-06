@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.rememberMarkerState
-import com.hpcreation.mapComposeDemo.MarkerData
+import com.hpcreation.mapComposeDemo.data.model.MarkerData
 import com.hpcreation.mapComposeDemo.ui.extensions.bitmapDescriptorFromVector
 
 @Composable

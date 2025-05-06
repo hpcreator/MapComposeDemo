@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -16,7 +17,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
-import com.hpcreation.mapComposeDemo.MarkerData
+import com.hpcreation.mapComposeDemo.data.model.MarkerData
 import com.hpcreation.mapComposeDemo.ui.extensions.argbToHue
 import com.hpcreation.mapComposeDemo.ui.theme.MapComposeDemoTheme
 
@@ -29,7 +30,7 @@ fun MapScreen(
     gestureEnabled: Boolean = true,
     onMapReady: (() -> Unit)? = null,
     onMapLongPressed: ((LatLng) -> Unit)? = null,
-    dynamicMarker: MarkerData? = null
+    dynamicMarkers: List<MarkerData?>? = null
 ) {
     val defaultCameraPosition = remember {
         CameraPosition.fromLatLngZoom(
@@ -81,12 +82,17 @@ fun MapScreen(
                 )
             }
         }
-        dynamicMarker?.let {
-            Marker(
-                state = rememberMarkerState(position = it.position),
-                title = it.title,
-                snippet = it.snippet
-            )
+        dynamicMarkers?.forEach { marker ->
+            marker?.let {
+                Marker(
+                    state = rememberMarkerState(
+                        key = it.position.toString(),
+                        position = it.position
+                    ),
+                    title = it.title,
+                    snippet = it.snippet
+                )
+            }
         }
     }
 }
@@ -115,7 +121,7 @@ fun MapScreenPreview() {
             position = LatLng(23.031806823932076, 72.53452032615851),
             title = "IIM, Ahmedabad",
             snippet = "This is IIM College of Ahmedabad, Gujarat",
-            iconColor = androidx.compose.ui.graphics.Color.Blue
+            iconColor = Color.Blue
         )
     )
     MapComposeDemoTheme {

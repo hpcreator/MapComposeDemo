@@ -1,27 +1,29 @@
 package com.hpcreation.mapComposeDemo
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.google.android.gms.maps.model.LatLng
+import androidx.navigation.NavDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.google.maps.android.compose.MapType
-import com.hpcreation.mapComposeDemo.ui.extensions.fetchAddress
-import com.hpcreation.mapComposeDemo.ui.screens.MapScreen
+import com.hpcreation.mapComposeDemo.ui.screens.NavigationHost
 import com.hpcreation.mapComposeDemo.ui.theme.MapComposeDemoTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,67 +32,66 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+            val features = getFeatures()
 
-            val context = LocalContext.current
-            val selectedPosition = remember { mutableStateOf<LatLng?>(null) }
-            val address = remember { mutableStateOf<String?>(null) }
-
-            val markers = remember { mutableStateListOf<MarkerData>() }
-
-            markers.add(
-                MarkerData(
-                    position = LatLng(23.022313639895916, 72.53758245374887),
-                    title = "Valtech, Ahmedabad",
-                    snippet = "This is Valtech office at Ahmedabad, Gujarat",
-                    iconColor = null,
-                    customIcon = R.drawable.valtech_logo
-                )
-            )
-            markers.add(
-                MarkerData(
-                    position = LatLng(23.031806823932076, 72.53452032615851),
-                    title = "IIM, Ahmedabad",
-                    snippet = "This is IIM College of Ahmedabad, Gujarat",
-                    iconColor = MaterialTheme.colorScheme.primaryContainer,
-                    customIcon = null
-                )
-            )
             MapComposeDemoTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(), topBar = {
-                        TopAppBar(
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            ), title = {
-                                Text("Google Map Demo")
-                            })
-                    }) { innerPadding ->
-
-                    MapScreen(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
-                        markers = markers,
-                        mapType = MapType.NORMAL,
-                        zoomControlsEnabled = true,
-                        gestureEnabled = true,
-                        onMapReady = {
-                            Toast.makeText(context, "Map is ready", Toast.LENGTH_LONG).show()
-                        },
-                        onMapLongPressed = { latLng ->
-                            selectedPosition.value = latLng
-                            context.fetchAddress(latLng) {
-                                address.value = it
-                            }
-                        },
-                        dynamicMarker = selectedPosition.value?.let {
-                            MarkerData(
-                                position = it, title = "Selected Address", snippet = address.value
-                            )
-                        })
-                }
+                MainScreen(navController, features)
             }
         }
     }
+
+    private fun getFeatures(): List<Pair<String, String>> {
+        return listOf(
+            "Previous Demo" to Screen.MapScreen.routeWithArgs(
+                mapType = MapType.NORMAL, zoomControlsEnabled = true, gestureEnabled = false
+            ),
+            "Polyline and Polygon" to Screen.PolyLinePolyGon.route,
+            "Directions and Distance" to Screen.DirectionsDistance.route,
+            "Different Travel Mode" to Screen.TravelMode.route,
+            "Map Styling" to Screen.MapStyling.route,
+            "Advanced Data Handling" to Screen.PlacesGeocoding.route,
+            "Offline Maps and Caching" to Screen.OfflineMaps.route,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(navController: NavHostController, features: List<Pair<String, String>>) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val showBackButton = currentDestination?.route != Screen.Home.route
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(), topBar = {
+            TopAppBar(
+                title = { Text(getToolbarTitle(currentDestination, features)) },
+                navigationIcon = {
+                    if (showBackButton) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        }) { innerPadding ->
+        NavigationHost(navController, innerPadding, features)
+    }
+}
+
+fun getToolbarTitle(
+    currentDestination: NavDestination?, features: List<Pair<String, String>>
+): String {
+    return features.find {
+        currentDestination?.route?.startsWith(it.second.take(10)) == true
+    }?.first ?: "Google Map Demo"
 }

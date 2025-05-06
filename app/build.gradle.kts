@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.google.fonts)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.android.maps.utils)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,4 +65,6 @@ dependencies {
     //Google Play services
     implementation(libs.androidx.google.maps)
     implementation(libs.androidx.compose.maps)
+
+    implementation(libs.androidx.navigation.compose)
 }

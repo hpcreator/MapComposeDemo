@@ -2,7 +2,9 @@ package com.hpcreation.mapComposeDemo.ui.extensions
 
 import android.content.Context
 import android.graphics.Canvas
+import android.location.Address
 import android.location.Geocoder
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -11,9 +13,9 @@ import androidx.core.graphics.createBitmap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import android.graphics.Color as androidColor
@@ -38,20 +40,36 @@ fun Context.bitmapDescriptorFromVector(
     return BitmapDescriptorFactory.fromBitmap(bitmap)
 }
 
-fun Context.fetchAddress(latLng: LatLng, callback: (String) -> Unit) {
-    val geocoder = Geocoder(this, Locale.getDefault())
-    CoroutineScope(Dispatchers.IO).launch {
+@Suppress("DEPRECATION")
+@OptIn(ExperimentalCoroutinesApi::class)
+suspend fun Context.fetchAddress(latLng: LatLng): String {
+    return withContext(Dispatchers.IO) {
         try {
-            val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            val address = addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown Address"
-            withContext(Dispatchers.Main) {
-                callback(address)
+            val geocoder = Geocoder(this@fetchAddress, Locale.getDefault())
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                suspendCancellableCoroutine { continuation ->
+                    geocoder.getFromLocation(
+                        latLng.latitude, latLng.longitude, 1, object : Geocoder.GeocodeListener {
+                            override fun onGeocode(addresses: MutableList<Address>) {
+                                val address =
+                                    addresses.firstOrNull()?.getAddressLine(0) ?: "Unknown Address"
+                                continuation.resume(address, null)
+                            }
+
+                            override fun onError(errorMessage: String?) {
+                                continuation.resume("Unable to fetch address", null)
+                            }
+                        })
+                }
+            } else {
+                // Legacy fallback
+                val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown Address"
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            withContext(Dispatchers.Main) {
-                callback("Unable to fetch address")
-            }
+            "Unable to fetch address"
         }
     }
 }
