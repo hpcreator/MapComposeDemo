@@ -14,7 +14,7 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
-class MapRepositoryImpl(private val context: Context) : MapRepository {
+class MapRepositoryImpl(context: Context) : MapRepository {
     override fun getDefaultMarkers(): List<MarkerData> {
         return listOf(
             MarkerData(
