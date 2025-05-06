@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">MapComposeDemo</string>
-    <string name="mapKey">AIzaSyDD6GCkMibk9twdwS8hSSK9-Zb6D4kuKv0</string>
-    <string name="cloudStyleId">72be3250119ff10c</string>
+    <string name="mapKey">YOUR-API-KEY</string>
+    <string name="cloudStyleId">YOUR-STYLE-ID</string>
 </resources>
