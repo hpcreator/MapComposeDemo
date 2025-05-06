@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.hpcreation.mapComposeDemo.data.model.MarkerData
-import com.hpcreation.mapComposeDemo.data.repo.MarkerRepository
+import com.hpcreation.mapComposeDemo.data.repo.MapRepository
 import com.hpcreation.mapComposeDemo.ui.extensions.fetchAddress
 
-class MapViewModel(markerRepository: MarkerRepository) : ViewModel() {
+class MapViewModel(markerRepository: MapRepository) : ViewModel() {
     val markers = mutableStateListOf<MarkerData>()
     var markerList = mutableStateListOf<MarkerData?>(null)
     private var lastAddTime = 0L

@@ -1,18 +1,20 @@
 package com.hpcreation.mapComposeDemo.data.repo_impl
 
+import android.content.Context
 import com.google.android.gms.maps.model.LatLng
 import com.hpcreation.mapComposeDemo.R
 import com.hpcreation.mapComposeDemo.data.model.DirectionData
 import com.hpcreation.mapComposeDemo.data.model.MarkerData
 import com.hpcreation.mapComposeDemo.data.model.PlacePrediction
-import com.hpcreation.mapComposeDemo.data.repo.MarkerRepository
+import com.hpcreation.mapComposeDemo.data.network.TileCacheManager
+import com.hpcreation.mapComposeDemo.data.repo.MapRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
-class MarkerRepositoryImpl : MarkerRepository {
+class MapRepositoryImpl(private val context: Context) : MapRepository {
     override fun getDefaultMarkers(): List<MarkerData> {
         return listOf(
             MarkerData(
@@ -180,15 +182,22 @@ class MarkerRepositoryImpl : MarkerRepository {
     override fun getClusterMarkers(): List<MarkerData> {
         return listOf(
             MarkerData(
-                LatLng(23.047018111785995, 72.51531655188046),
-                "Gurdwara Gobind Dham, Thaltej"
+                LatLng(23.047018111785995, 72.51531655188046), "Gurdwara Gobind Dham, Thaltej"
             ),
             MarkerData(
-                LatLng(23.048997533900216, 72.51576716299824),
-                "Mercedes-Benz Landmark Cars"
+                LatLng(23.048997533900216, 72.51576716299824), "Mercedes-Benz Landmark Cars"
             ),
             MarkerData(LatLng(23.04381928992368, 72.5171485001726), "Gulmohar"),
             MarkerData(LatLng(23.042710692072216, 72.51462391784206), "The Grand Bhagwati"),
         )
+    }
+
+    private val tileCacheManager = TileCacheManager(context)
+
+    override fun getOfflineTileProvider() = tileCacheManager.getOfflineTileProvider()
+    override suspend fun downloadVisibleTiles(
+        minX: Int, maxX: Int, minY: Int, maxY: Int, zoom: Int
+    ) {
+        tileCacheManager.downloadTilesForArea(minX, maxX, minY, maxY, zoom)
     }
 }

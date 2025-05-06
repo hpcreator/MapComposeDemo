@@ -75,5 +75,6 @@ fun NavigationHost(
         }
         composable(Screen.MapStyling.route) { MapStylingScreen(paddingValues) }
         composable(Screen.PlacesGeocoding.route) { AdvancedDataHandlingScreen(paddingValues) }
+        composable(Screen.OfflineMaps.route) { OfflineMapsScreen(paddingValues) }
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.hpcreation.mapComposeDemo.data.model.MarkerData
 import com.hpcreation.mapComposeDemo.data.model.PlacePrediction
-import com.hpcreation.mapComposeDemo.data.repo.MarkerRepository
+import com.hpcreation.mapComposeDemo.data.repo.MapRepository
 import com.hpcreation.mapComposeDemo.utils.ApiKeyProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AdvanceDataViewmodel(
-    val markerRepository: MarkerRepository, private val apiKeyProvider: ApiKeyProvider
+    val markerRepository: MapRepository, private val apiKeyProvider: ApiKeyProvider
 ) : ViewModel() {
     private val _predictions = MutableStateFlow<List<PlacePrediction>>(emptyList())
     val predictions: StateFlow<List<PlacePrediction>> = _predictions

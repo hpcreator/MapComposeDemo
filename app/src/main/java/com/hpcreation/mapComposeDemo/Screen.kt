@@ -21,9 +21,5 @@ sealed class Screen(val route: String) {
     object TravelMode : Screen("travelMode")
     object MapStyling : Screen("mapStyling")
     object PlacesGeocoding : Screen("placesGeocoding")
-    object Clustering : Screen("clustering")
-    object Geofencing : Screen("geofencing")
     object OfflineMaps : Screen("offlineMaps")
-    object Performance : Screen("performance")
-    object SecurityAccessibility : Screen("securityAccessibility")
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.hpcreation.mapComposeDemo.data.model.TravelModes
-import com.hpcreation.mapComposeDemo.data.repo.MarkerRepository
+import com.hpcreation.mapComposeDemo.data.repo.MapRepository
 import com.hpcreation.mapComposeDemo.utils.ApiKeyProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import org.json.JSONObject
 import java.net.URL
 
 class DirectionViewmodel(
-    private val repository: MarkerRepository, private val apiKeyProvider: ApiKeyProvider
+    private val repository: MapRepository, private val apiKeyProvider: ApiKeyProvider
 ) : ViewModel() {
     private val _routePoints = MutableStateFlow<List<LatLng>>(emptyList())
     val routePoints: StateFlow<List<LatLng>> = _routePoints.asStateFlow()
